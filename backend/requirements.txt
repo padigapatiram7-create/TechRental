@@ -3,3 +3,7 @@ djangorestframework>=3.16
 django-filter>=25
 djangorestframework-simplejwt>=5.5
 django-cors-headers>=4.7
+dj-database-url>=2.3
+gunicorn>=23
+psycopg[binary]>=3.2
+whitenoise>=6.8

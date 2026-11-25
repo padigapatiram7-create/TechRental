@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: techrental-padi-2026-api
+    runtime: python
+    region: singapore
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: python manage.py migrate && python manage.py seed_gadgets --with-orders && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    healthCheckPath: /api/gadgets/
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "false"
+      - key: ALLOWED_HOSTS
+        value: techrental-padi-2026-api.onrender.com,localhost,127.0.0.1
+      - key: CORS_ALLOWED_ORIGINS
+        value: http://localhost:3000,https://tech-rental-pied.vercel.app
+      - key: DATABASE_URL
+        fromDatabase:
+          name: techrental-padi-2026-db
+          property: connectionString
+
+databases:
+  - name: techrental-padi-2026-db
+    databaseName: techrental
+    user: techrental
+    region: singapore
+    plan: free
